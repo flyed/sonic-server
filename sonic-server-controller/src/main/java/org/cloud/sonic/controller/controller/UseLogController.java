@@ -6,9 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.cloud.sonic.common.config.WebAspect;
 import org.cloud.sonic.common.http.RespEnum;
 import org.cloud.sonic.common.http.RespModel;
+import org.cloud.sonic.controller.models.domain.Devices;
 import org.cloud.sonic.controller.models.domain.UseLog;
 import org.cloud.sonic.controller.models.domain.Users;
 import org.cloud.sonic.controller.models.dto.UseLogDTO;
+import org.cloud.sonic.controller.services.DevicesService;
 import org.cloud.sonic.controller.services.UseLogService;
 import org.cloud.sonic.controller.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class UseLogController {
     private UseLogService useLogService;
     @Autowired
     private UsersService usersService;
+    private DevicesService devicesService;
 
     @WebAspect
     @Operation(summary = "记录使用日志", description = "记录使用日志")
@@ -40,6 +43,9 @@ public class UseLogController {
         }
         UseLog useLog = useLogDTO.convertTo();
         Users users = usersService.getUserInfo(token);
+        Devices devices = devicesService.getById(useLogDTO.getDeviceId());
+        useLog.setUsername(users.getUserName());
+        useLog.setUdId(devices.getUdId());
         useLog.setUserId(users.getId());
         useLogService.save(useLog);
         return new RespModel<>(RespEnum.UPDATE_OK);

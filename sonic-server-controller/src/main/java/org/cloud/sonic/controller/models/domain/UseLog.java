@@ -40,6 +40,10 @@ public class UseLog {
     private Integer deviceId;
 
     @TableField
+    @Column(value = "ud_id", isNull = false, comment = "设备 udid")
+    private String udId;
+
+    @TableField
     @Column(value = "start_time", isNull = false, comment = "开始时间",type = MySqlTypeConstant.DATETIME)
     private Date startTime;
 
@@ -50,6 +54,10 @@ public class UseLog {
     @TableField
     @Column(value = "user_id", isNull = false, comment = "操作人")
     private Integer userId;
+
+    @TableField
+    @Column(value = "username", isNull = false, comment = "操作人")
+    private String username;
 
     @Schema(description = "创建时间", example = "2021-08-15 11:36:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
