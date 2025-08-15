@@ -31,12 +31,13 @@ public class UseLogController {
     private UseLogService useLogService;
     @Autowired
     private UsersService usersService;
+    @Autowired
     private DevicesService devicesService;
 
     @WebAspect
     @Operation(summary = "记录使用日志", description = "记录使用日志")
     @PostMapping
-    public RespModel<String> save(@Validated @RequestBody UseLogDTO useLogDTO, HttpServletRequest request) {
+    public RespModel<Integer> save(@Validated @RequestBody UseLogDTO useLogDTO, HttpServletRequest request) {
         String token = request.getHeader("SonicToken");
         if (token == null) {
             return new RespModel(RespEnum.UNAUTHORIZED);
@@ -47,8 +48,8 @@ public class UseLogController {
         useLog.setUsername(users.getUserName());
         useLog.setUdId(devices.getUdId());
         useLog.setUserId(users.getId());
-        useLogService.save(useLog);
-        return new RespModel<>(RespEnum.UPDATE_OK);
+        useLogService.saveOrUpdate(useLog);
+        return new RespModel<Integer>(RespEnum.UPDATE_OK, useLog.getId());
     }
 
 }

@@ -25,6 +25,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UseLogDTO implements Serializable, TypeConverter<UseLogDTO, UseLog> {
+
+    @Schema(description = "记录 ID", example = "1")
+    private Integer id;
+
     @Schema(description = "设备ID", example = "1")
     @NotNull(message = "设备ID不能为空")
     Integer deviceId;
